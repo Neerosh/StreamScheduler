@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="StreamScheduler.MVVM.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"  Background="Transparent" FontSize="12"
+             Foreground="White"
+             d:DesignHeight="500" d:DesignWidth="900">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Row="3" Grid.Column="0"
+                      Grid.ColumnSpan="6" Grid.RowSpan="4"
+                      Margin="15,10,15,0" SelectionMode="Single" SelectionUnit="FullRow"
+                      HeadersVisibility="Column" BorderThickness="0"
+                      Name="dgSearchVideos"
+                      ItemsSource="{Binding Videos}"
+                      SelectedItem="{Binding SelectedVideo}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      Background="Transparent"
+                      SelectionChanged="dgSearchVideos_SelectionChanged"
+                      MouseDoubleClick="dgSearchVideos_DoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Channel" Binding="{Binding ChannelName}"
+                                        Width="auto"/>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="DateTime" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"
+                                        Width="auto"/>
+                </DataGrid.Columns>
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Height" Value="18"/>
+                    </Style>
+                </DataGrid.Resources>
+            </DataGrid>
+            <Label Grid.Row="0" Grid.Column="0"
+                   Content="Channel:" Foreground="White"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Margin="15,15,0,15"/>
+            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
+                      Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Channels}"
+                      MinWidth="200" Margin="0,15,0,15" x:Name="cboChannel" Height="20" SelectedItem="{Binding SelectedChannel}"
+                      DisplayMemberPath="ChannelName" SelectedValuePath="ChannelUrl"/>
+            <Button x:Name="btnSeearch" Grid.Row="0" Grid.Column="5"               
+                    HorizontalAlignment="Right" VerticalAlignment="Center" 
+                    Margin="0,15,15,15"
+                    Content="Search Upcoming Videos"
+                    Command="{Binding SearchUpcomingVideosCommand}"/>
+            <Button x:Name="btnAddPlaylist" Grid.Row="7" Grid.Column="5"        
+                        HorizontalAlignment="Right" VerticalAlignment="Center" 
+                        Content="Add Video to Playlist"
+                        Margin="0,0,15,0" Command="{Binding AddToPlaylistCommand}"/>
+            <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3"
+                   Width="240" Height="135" HorizontalAlignment="Left"
+                   Margin="14,0,0,0" x:Name="imgSelectedThumbnail" Stretch="Uniform"/>
+            <TextBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="4"
+                    Margin="15,5,15,5" TextWrapping="Wrap" BorderThickness="0"
+                    Foreground="White" Background="Transparent"
+                    x:Name="txtSelectedTitle" FontSize="14"/>
+            <TextBlock Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="4"
+                    Margin="15,5,15,5" TextWrapping="Wrap"
+                    Foreground="White" Background="Transparent"
+                    Text="Channel Links: " x:Name="txtChannelLinks">
+                        <LineBreak/>
+                        <TextBlock Text="Youtube: "/>
+                        <Hyperlink Hyperlink.Click="YoutubeLink_Click">
+                            <TextBlock x:Name="txtYoutubeLink"/>
+                        </Hyperlink>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,24 @@
+﻿<Application x:Class="StreamScheduler.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StreamScheduler"
+             xmlns:viewModel ="clr-namespace:StreamScheduler.MVVM.ViewModels"
+             xmlns:view ="clr-namespace:StreamScheduler.MVVM.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
+                <view:SearchView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:PlaylistViewModel}">
+                <view:PlaylistView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+                <view:SettingsView/>
+            </DataTemplate>
+            <!--<DataTemplate DataType="{x:Type viewModel:ChannelFormViewModel}">
+                <view:ChannelFormView/>
+            </DataTemplate>-->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
