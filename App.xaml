@@ -16,9 +16,9 @@
             <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
                 <view:SettingsView/>
             </DataTemplate>
-            <!--<DataTemplate DataType="{x:Type viewModel:ChannelFormViewModel}">
+            <DataTemplate DataType="{x:Type viewModel:ChannelFormViewModel}">
                 <view:ChannelFormView/>
-            </DataTemplate>-->
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -18,7 +18,7 @@ namespace StreamScheduler.MVVM.ViewModels
         private SearchViewModel SearchVM { get; set; }
         private PlaylistViewModel PlaylistVM { get; set; }
         private SettingsViewModel SettingsVM { get; set; }
-        //private ChannelFormViewModel ChannelFormVM { get; set; }
+        private ChannelFormViewModel ChannelFormVM { get; set; }
 
         private object _currentView;
 
@@ -35,7 +35,7 @@ namespace StreamScheduler.MVVM.ViewModels
             SearchVM = new SearchViewModel();
             PlaylistVM = new PlaylistViewModel();
             SettingsVM = new SettingsViewModel();
-            //ChannelFormVM = new ChannelFormViewModel();
+            ChannelFormVM = new ChannelFormViewModel();
             CurrentView = SearchVM;
 
             SearchViewCommand = new RelayCommand(o => {
@@ -47,9 +47,9 @@ namespace StreamScheduler.MVVM.ViewModels
             SettingsViewCommand = new RelayCommand(o => {
                 CurrentView = SettingsVM;
             });
-            //ChannelFormViewCommand = new RelayCommand(o => {
-            //    CurrentView = ChannelFormVM;
-            //});
+            ChannelFormViewCommand = new RelayCommand(o => {
+                CurrentView = ChannelFormVM;
+            });
         }
     }
 }

@@ -15,19 +15,23 @@ namespace StreamScheduler.MVVM.ViewModels
         private VideoViewModel _selectedVideo;
         private ChannelViewModel _selectedChannel;
 
-        public VideoViewModel SelectedVideo { get => _selectedVideo; set {
+        public VideoViewModel SelectedVideo { 
+            get => _selectedVideo; 
+            set {
                 _selectedVideo = value;
                 OnPropertyChanged("SelectedVideo");
             }
         }
 
         public ChannelViewModel SelectedChannel {
-            get => _selectedChannel; set {
+            get => _selectedChannel; 
+            set {
                 _selectedChannel = value;
                 OnPropertyChanged("SelectedChannel");
             }
         }
-        public ObservableCollection<VideoViewModel> Videos { get => _videos;
+        public ObservableCollection<VideoViewModel> Videos { 
+            get => _videos;
             set {
                 _videos = value;
                 OnPropertyChanged("Videos");
@@ -40,12 +44,13 @@ namespace StreamScheduler.MVVM.ViewModels
 
 
         public SearchViewModel() {
+
             _videos = sql.ListAvailableVideos();
             _channels = sql.GetAllChannelsNames();
-            SQLite sqlite = new SQLite();
+
             //AddToPlaylistCommand = new AddToPlaylistCommand(SelectedVideo);
             AddToPlaylistCommand = new RelayCommand(o => {
-                sqlite.AddPlaylistVideo(SelectedVideo.VideoUrl);
+                sql.AddPlaylistVideo(SelectedVideo.VideoUrl);
             });
             SearchUpcomingVideosCommand = new RelayCommand(async o => {
                 await SearchUpcomingVideos(SelectedChannel.ChannelUrl);

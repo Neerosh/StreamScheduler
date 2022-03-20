@@ -13,6 +13,7 @@ namespace StreamScheduler.MVVM.ViewModels
 
         public string ChannelName => _channel.Name;
         public string ChannelUrl => _channel.Url;
+        public string ChannelDescription => _channel.Description;
 
         public ChannelViewModel(Channel channel) {
             _channel = channel;

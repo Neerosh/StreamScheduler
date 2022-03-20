@@ -24,7 +24,8 @@ namespace StreamScheduler
                                     "CREATE TABLE IF NOT EXISTS Channels (" +
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                     "Name Varchar(100) NOT NULL," +
-                                    "Url Varchar(2000) NOT NULL," +
+                                    "Description Varchar(2000),"+
+                                    "Url Varchar(100) NOT NULL," +
                                     "UNIQUE (Url)" +
                                   ");"+
                                   "CREATE TABLE IF NOT EXISTS Videos (" +
@@ -86,7 +87,19 @@ namespace StreamScheduler
                 MessageBox.Show(ex.Message, "Error");
             }
             connection.Close();
+        }
 
+        public void AddChannel(ChannelViewModel channel) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "INSERT INTO Channels(Name,Url,Description)"+
+                                     " Values ('" + channel.ChannelName + "','" + channel.ChannelUrl + "','"+channel.ChannelDescription+"')";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
         }
 
         public void UpdateVideos(List<Video> listVideos) {
@@ -224,16 +237,15 @@ namespace StreamScheduler
             return googleApiKey;
         }
 
-
         public ObservableCollection<ChannelViewModel> GetAllChannelsNames() {
             ObservableCollection<ChannelViewModel> channels = new ObservableCollection<ChannelViewModel>();
             try {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "SELECT name,url FROM channels";
+                command.CommandText = "SELECT name,url,IFNULL(description,'') FROM channels";
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
-                    channels.Add(new ChannelViewModel (new Channel (reader.GetString(0),reader.GetString(1))));
+                    channels.Add(new ChannelViewModel (new Channel (reader.GetString(0),reader.GetString(1),reader.GetString(2))));
                 }
                 reader.Close();
                 connection.Close();
