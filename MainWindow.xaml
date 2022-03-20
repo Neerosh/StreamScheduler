@@ -20,17 +20,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.Background>
-            <ImageBrush ImageSource="/Images/La+DarknessBackground.png"/>
+            <ImageBrush ImageSource="/Images/La+DarknessBackground.png" Stretch="UniformToFill" />
         </Grid.Background>
-
 
         <Menu Grid.ColumnSpan="3" 
               VerticalAlignment="Top"
               Background="#222222" 
               Foreground="White">
-            <MenuItem Header="Upcoming" 
+            <MenuItem Header="Upcoming Livestreams" 
                       Command="{Binding SearchViewCommand}"/>
-            <MenuItem Header="Playlist" 
+            <MenuItem Header="Watcher Playlist" 
                       Command="{Binding PlaylistViewCommand}"/>
             <MenuItem Header="Manage Channels" 
                       Command="{Binding ChannelFormViewCommand}"/>
