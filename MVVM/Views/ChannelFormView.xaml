@@ -16,13 +16,13 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
@@ -32,10 +32,10 @@
         <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4"
                  Margin="15,15,0,0"
                  MinWidth="250" Height="20"
-                 Foreground="White" Background="Black" 
+                 Foreground="White" Background="#262626" 
                  Text="{Binding FormChannelUrl}"/>
         <Button Grid.Column="5" Grid.Row="0" 
-                Margin="15,15,15,0" Width="150"
+                Margin="15,15,15,0" Width="150" Height="20"
                 Content="Get Channel Information" Command="{Binding GetChannelInformation}"/>
         <Label Grid.Column="0" Grid.Row="1" Margin="15,15,0,0" 
                VerticalAlignment="Top"
@@ -43,18 +43,21 @@
         <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
                  Margin="15,15,0,0"
                  MinWidth="250" Height="20"
-                 Foreground="White" Background="Black" 
+                 Foreground="White" Background="#262626"  
                  Text="{Binding FormChannelName}"/>
-        <Label Grid.Column="0" Grid.Row="3" Margin="15,5,0,0"
+        <Button Grid.Column="5" Grid.Row="1" 
+                Margin="15,15,15,0" Width="150" Height="20"
+                Content="Clear Selection" Command="{Binding ClearSelection}"/>
+        <Label Grid.Column="0" Grid.Row="3" Margin="15,10,0,0"
                VerticalAlignment="Top"
                Foreground="White" Content="Channel Description:"/>
-        <TextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4"
-                 Margin="15,8,0,0" 
-                 MinWidth="250" Height="50" TextWrapping="Wrap"
-                 Foreground="White" Background="Black" 
+        <TextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4" Grid.RowSpan="2"
+                 Margin="15,10,0,0" VerticalScrollBarVisibility="Auto"
+                 MinWidth="250" Height="80" TextWrapping="Wrap"
+                 Foreground="White" Background="#262626" 
                  Text="{Binding FormChannelDescription}" />
-        <DataGrid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="5" Grid.RowSpan="4"
-                  Margin="15,20,0,20"
+        <DataGrid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5" Grid.RowSpan="4"
+                  Margin="15,20,0,20" SelectionUnit="FullRow" SelectionMode="Single"
                   HeadersVisibility="Column" BorderThickness="0"
                   Name="dgSearchVideos"
                   ItemsSource="{Binding Channels}"
@@ -75,24 +78,29 @@
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="Height" Value="18"/>
+                    <Setter Property="Background" Value="#262626"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#8900BC" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
-
         </DataGrid>
        
         
         
         
-        <StackPanel Grid.Column="5" Grid.Row="7" Margin="15,0,15,0"
-                    Width="150" MinHeight="100"
+        <StackPanel Grid.Column="5" Grid.Row="5" Margin="15,20,15,0"
                     VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Button Margin="0,0,0,10" Height="20" Width="100"
+            <Button Margin="0,0,0,10" Height="20" Width="150" 
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Insert Channel" Command="{Binding InsertChannel}"/>
-            <Button Margin="0,0,0,10" Height="20" Width="100"
+            <Button Margin="0,0,0,10" Height="20" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Update Channel" Command="{Binding UpdateChannel}"/>
-            <Button Margin="0,0,0,0" Height="20" Width="100"
+            <Button Margin="0,0,0,0" Height="20" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Delete Channel" Command="{Binding DeleteChannel}"/>
         </StackPanel>

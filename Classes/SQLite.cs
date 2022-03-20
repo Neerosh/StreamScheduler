@@ -24,7 +24,7 @@ namespace StreamScheduler
                                     "CREATE TABLE IF NOT EXISTS Channels (" +
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                     "Name Varchar(100) NOT NULL," +
-                                    "Description Varchar(2000),"+
+                                    "Description Varchar(10000),"+
                                     "Url Varchar(100) NOT NULL," +
                                     "UNIQUE (Url)" +
                                   ");"+
@@ -79,7 +79,7 @@ namespace StreamScheduler
             command.Connection = connection;
             try {
                 foreach (Channel channel in channelsHololive) {
-                    command.CommandText = "INSERT OR IGNORE INTO Channels(Name,Url) Values ('" + channel.Name + "','" + channel.Url + "')";
+                    command.CommandText = "INSERT OR IGNORE INTO Channels(Name,Url,Description) Values ('" + channel.Name + "','" + channel.Url + "','')";
                     command.ExecuteNonQuery();
                 }
                 
@@ -89,12 +89,36 @@ namespace StreamScheduler
             connection.Close();
         }
 
-        public void AddChannel(ChannelViewModel channel) {
+        public void InsertChannel(ChannelViewModel channel) {
             connection.Open();
             command.Connection = connection;
             try {
                 command.CommandText = "INSERT INTO Channels(Name,Url,Description)"+
-                                     " Values ('" + channel.ChannelName + "','" + channel.ChannelUrl + "','"+channel.ChannelDescription+"')";
+                                     " Values ('" + channel.ChannelName + "','" + channel.ChannelUrl + "','"+channel.ChannelDescription.Replace("'", "''") + "')";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+        public void UpdateChannel(ChannelViewModel channel) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "UPDATE Channels SET Name = '" + channel.ChannelName + "',Description = '" + channel.ChannelDescription.Replace("'", "''") + "'" +
+                                     " WHERE Url = '"+channel.ChannelUrl+"'";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+        public void DeleteChannel(ChannelViewModel channel) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "DELETE FROM Channels "+
+                                     " WHERE Url = '" + channel.ChannelUrl + "'";
                 command.ExecuteNonQuery();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error");
@@ -242,7 +266,7 @@ namespace StreamScheduler
             try {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "SELECT name,url,IFNULL(description,'') FROM channels";
+                command.CommandText = "SELECT name,url,description FROM channels";
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     channels.Add(new ChannelViewModel (new Channel (reader.GetString(0),reader.GetString(1),reader.GetString(2))));

@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StreamScheduler.MVVM.Views"
-             mc:Ignorable="d" Background="Transparent"
-             FontSize="10" FontWeight="Medium"
+             mc:Ignorable="d" Background="Transparent"  FontSize="12"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,15 +20,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label VerticalAlignment="Center" HorizontalAlignment="Center"
-               Content="Google Youtube API Key:" Margin="15,15,0,15"
+               Content="Google Youtube API Key:" Margin="15,15,0,0"
                Foreground="White"/>
         <TextBox VerticalAlignment="Center" HorizontalAlignment="Left"
-                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"  Height="20"
-                 TextAlignment="Left" Padding="3" Margin="15,15,0,15"
-                 Width="auto" MinWidth="400" x:Name="txtGoogleAPIKey"/>
+                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" 
+                 MinWidth="350" Height="20"
+                 TextAlignment="Left" Margin="15,15,0,0"
+                 x:Name="txtGoogleAPIKey"
+                 Foreground="White" Background="#262626" />
         <Button VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Grid.Column="3" Grid.Row="3" Margin="0,0,15,15"
-                Content="Save Settings" Padding="3"
+                Grid.Column="3" Grid.Row="0" Margin="0,15,15,0"
+                Content="Save Settings" MinWidth="100" MinHeight="20"
                 x:Name="BtnSaveSettings" Click="BtnSaveSettings_Click"/>
     </Grid>
 </UserControl>

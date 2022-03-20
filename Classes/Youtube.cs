@@ -18,11 +18,32 @@ namespace StreamScheduler
             });
             return youtubeService;
         }
+        public async Task<List<Channel>> GetChannelInformation(string channelUrl) {
+            var youtubeService = CreateYoutubeService();
+            List<Channel> listChannels = new List<Channel>();
+
+            if (youtubeService.ApiKey.Equals("")) { return listChannels; }
+            var searchListRequest = youtubeService.Channels.List("snippet");
+            searchListRequest.Id = channelUrl;
+            // Call the search.list method to retrieve results matching the specified query term.
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            // Add each result to the appropriate list, and then display the lists of
+            // matching videos, channels, and playlists.
+            if (searchListResponse.Items == null) { return listChannels; }
+            foreach (var searchResult in searchListResponse.Items) {
+                switch (searchResult.Kind) {
+                    case "youtube#channel":
+                        listChannels.Add(new Channel(searchResult.Snippet.Title, searchResult.Id, searchResult.Snippet.Description));
+                        break;
+                }
+            }
+            return listChannels;
+        }
         public async Task<List<Video>> GetUpcomingVideos(string channelUrl) {
-            List<Video> videos = new List<Video>();
+            List<Video> listVideos = new List<Video>();
             List<string[]> videoids = new List<string[]>();
 
-            if (channelUrl == null || channelUrl.Equals("")) { return videos; }
+            if (channelUrl == null || channelUrl.Equals("")) { return listVideos; }
 
             string videosIds = "";
             List<string[,]> videosTimes = new List<string[,]>();
@@ -31,7 +52,7 @@ namespace StreamScheduler
             // Create the service.
             var youtubeService = CreateYoutubeService();
 
-            if (youtubeService.ApiKey.Equals("")) { return videos; }
+            if (youtubeService.ApiKey.Equals("")) { return listVideos; }
 
             var searchListRequest = youtubeService.Search.List("snippet");
             //searchListRequest.Q = "Free"; // Replace with your search term.
@@ -45,6 +66,7 @@ namespace StreamScheduler
 
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
+            if (searchListResponse.Items == null) { return listVideos; }
             foreach (var searchResult in searchListResponse.Items) {
                 switch (searchResult.Id.Kind) {
                     case "youtube#video":
@@ -54,7 +76,7 @@ namespace StreamScheduler
                         videosIds += searchResult.Id.VideoId;
                         Video video = new Video(searchResult.Snippet.Title, searchResult.Snippet.Thumbnails.Medium.Url, searchResult.Id.VideoId, channelUrl);
                         //video.channelName = searchResult.Snippet.ChannelTitle;
-                        videos.Add(video);
+                        listVideos.Add(video);
                         break;
                 }
             }
@@ -69,7 +91,7 @@ namespace StreamScheduler
             foreach (var searchResult2 in searchListResponse2.Items) {
                 switch (searchResult2.Kind) {
                     case "youtube#video":
-                        foreach (Video video in videos) {
+                        foreach (Video video in listVideos) {
                             if (searchResult2.Id.Equals(video.VideoUrl) && searchResult2.LiveStreamingDetails.ScheduledStartTime != null) {
                                 video.SetStartDateTimeYoutube(searchResult2.LiveStreamingDetails.ScheduledStartTime.ToString());
                             }
@@ -77,7 +99,7 @@ namespace StreamScheduler
                         break;
                 }
             }
-            return videos;
+            return listVideos;
         }
 
     }

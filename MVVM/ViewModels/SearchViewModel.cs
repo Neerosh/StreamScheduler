@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace StreamScheduler.MVVM.ViewModels
@@ -44,7 +45,6 @@ namespace StreamScheduler.MVVM.ViewModels
 
 
         public SearchViewModel() {
-
             _videos = sql.ListAvailableVideos();
             _channels = sql.GetAllChannelsNames();
 
@@ -70,11 +70,13 @@ namespace StreamScheduler.MVVM.ViewModels
             List<Video> listVideos;
             Youtube youtube = new Youtube();
             SQLite sql = new SQLite();
-            //lblSearch.Visibility = Visibility.Visible;
 
             listVideos = await youtube.GetUpcomingVideos(channelUrl);
-            sql.UpdateVideos(listVideos);
-            //lblSearch.Visibility = Visibility.Hidden;
+            if (listVideos.Count > 0) {
+                sql.UpdateVideos(listVideos);
+            } else {
+                MessageBox.Show("No upcoming livestreams not found.");
+            }
         }
 
     }

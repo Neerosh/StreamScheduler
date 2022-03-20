@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StreamScheduler.MVVM.ViewModels
 {
@@ -43,9 +44,11 @@ namespace StreamScheduler.MVVM.ViewModels
             set {
                 _selectedChannel = value;
                 OnPropertyChanged("SelectedChannel");
-                FormChannelUrl = _selectedChannel.ChannelUrl;
-                FormChannelName = _selectedChannel.ChannelName;
-                FormChannelDescription = _selectedChannel.ChannelDescription;
+                if (_selectedChannel != null) {
+                    FormChannelUrl = _selectedChannel.ChannelUrl;
+                    FormChannelName = _selectedChannel.ChannelName;
+                    FormChannelDescription = _selectedChannel.ChannelDescription;
+                }
             }
         }
         public ObservableCollection<ChannelViewModel> Channels {
@@ -60,12 +63,46 @@ namespace StreamScheduler.MVVM.ViewModels
         public RelayCommand InsertChannel { get; }
         public RelayCommand UpdateChannel { get; }
         public RelayCommand DeleteChannel { get; }
-
+        public RelayCommand ClearSelection { get; }
         public ChannelFormViewModel() {
-            _channels = sql.GetAllChannelsNames();
-            InsertChannel = new RelayCommand(o => {
-                sql.AddChannel(new ChannelViewModel(new Channel(FormChannelName,FormChannelUrl,FormChannelDescription)));
+            Channels = sql.GetAllChannelsNames();
+
+            GetChannelInformation = new RelayCommand(async o => {
+                await GetChannelInfomationTask(FormChannelUrl);
             });
+
+            InsertChannel = new RelayCommand(o => {
+                ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
+                sql.InsertChannel(channelView);
+                Channels = sql.GetAllChannelsNames();
+                SelectedChannel = channelView;
+            });
+            UpdateChannel = new RelayCommand(o => {
+                ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
+                sql.UpdateChannel(channelView);
+                Channels = sql.GetAllChannelsNames();
+                SelectedChannel = channelView;
+            });
+            DeleteChannel = new RelayCommand(o => {
+                ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
+                sql.DeleteChannel(channelView);
+                Channels = sql.GetAllChannelsNames();
+            });
+            ClearSelection = new RelayCommand(o => {
+                SelectedChannel = new ChannelViewModel(new Channel("", "", ""));
+            });
+        }
+
+        public async Task GetChannelInfomationTask(string channelUrl) {
+            List<Channel> listChannels;
+            Youtube youtube = new Youtube();
+            SQLite sql = new SQLite();
+            listChannels = await youtube.GetChannelInformation(channelUrl);
+            if (listChannels.Count > 0) {
+                SelectedChannel = new ChannelViewModel(listChannels[0]);
+            } else {
+                MessageBox.Show("Channel not found.");
+            }
         }
 
     }

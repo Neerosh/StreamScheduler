@@ -32,22 +32,20 @@ namespace StreamScheduler.MVVM.ViewModels
         }
 
         public MainViewModel() {
-            SearchVM = new SearchViewModel();
-            PlaylistVM = new PlaylistViewModel();
-            SettingsVM = new SettingsViewModel();
-            ChannelFormVM = new ChannelFormViewModel();
-            CurrentView = SearchVM;
-
             SearchViewCommand = new RelayCommand(o => {
-               CurrentView = SearchVM;
+                SearchVM = new SearchViewModel();
+                CurrentView = SearchVM;
             });
             PlaylistViewCommand = new RelayCommand(o => {
+                PlaylistVM = new PlaylistViewModel();
                 CurrentView = PlaylistVM;
             });
             SettingsViewCommand = new RelayCommand(o => {
+                SettingsVM = new SettingsViewModel();
                 CurrentView = SettingsVM;
             });
             ChannelFormViewCommand = new RelayCommand(o => {
+                ChannelFormVM = new ChannelFormViewModel();
                 CurrentView = ChannelFormVM;
             });
         }

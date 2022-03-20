@@ -17,7 +17,6 @@ namespace StreamScheduler
 
         public MainWindow() {
             InitializeComponent();
-            sql.AddChannels();
             LoopCheckIsLive();
         }
         private async Task LoopCheckIsLive() {

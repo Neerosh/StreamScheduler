@@ -51,6 +51,13 @@
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                         <Setter Property="Height" Value="18"/>
+                        <Setter Property="Background" Value="#262626"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="#8900BC" />
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                 </DataGrid.Resources>
             </DataGrid>
@@ -59,8 +66,9 @@
                    HorizontalAlignment="Left" VerticalAlignment="Center"
                    Margin="15,15,0,15"/>
             <ComboBox HorizontalAlignment="Left" VerticalAlignment="Center"
-                      Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Channels}"
-                      MinWidth="200" Margin="0,15,0,15" x:Name="cboChannel" Height="20" SelectedItem="{Binding SelectedChannel}"
+                      Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
+                      ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}"
+                      MinWidth="200" Margin="0,15,0,15" x:Name="cboChannel" Height="20" 
                       DisplayMemberPath="ChannelName" SelectedValuePath="ChannelUrl"/>
             <Button x:Name="btnSeearch" Grid.Row="0" Grid.Column="5"               
                     HorizontalAlignment="Right" VerticalAlignment="Center" 

@@ -33,6 +33,7 @@
                   ItemsSource="{Binding}"
                   BorderThickness="0"
                   AutoGenerateColumns="False" IsReadOnly="True" MinHeight="350"
+                  SelectionUnit="FullRow" SelectionMode="Single"
                   MouseDoubleClick="dgPlaylistVideos_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Channel" Binding="{Binding ChannelName}"
@@ -43,11 +44,18 @@
                                     Width="auto"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
-            <Style TargetType="DataGridCell">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Height" Value="16"/>
-            </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Height" Value="18"/>
+                    <Setter Property="Background" Value="#262626"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#8900BC" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
             </DataGrid.Resources>
         </DataGrid>
         <Button VerticalAlignment="Center" HorizontalAlignment="Right"

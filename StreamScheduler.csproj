@@ -8,7 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\La+DarknessBackground.png" />
+    <None Remove="MioBackground.png" />
     <None Remove="MVVM\Views\SearchView.xaml~RF546841d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\La+DarknessBackground.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Fonts\" />
-    <Folder Include="Images\" />
     <Folder Include="MVVM\Models\" />
   </ItemGroup>
 
