@@ -8,22 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\La+DarknessBackground.png" />
-    <None Remove="MioBackground.png" />
-    <None Remove="MVVM\Views\SearchView.xaml~RF546841d.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\La+DarknessBackground.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.56.0.2617" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Fonts\" />
     <Folder Include="MVVM\Models\" />
   </ItemGroup>
 

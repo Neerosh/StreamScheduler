@@ -6,7 +6,8 @@
         xmlns:viewModel ="clr-namespace:StreamScheduler.MVVM.ViewModels"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Stream Scheduler" Height="600" Width="1000"
-        MinHeight="600" MinWidth="1000" FontSize="11">
+        MinHeight="600" MinWidth="1000" FontSize="11"
+        Background="#242424">
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
@@ -19,9 +20,6 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.Background>
-            <ImageBrush ImageSource="/Images/La+DarknessBackground.png" Stretch="UniformToFill" />
-        </Grid.Background>
 
         <Menu Grid.ColumnSpan="3" 
               VerticalAlignment="Top"

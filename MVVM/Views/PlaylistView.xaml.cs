@@ -58,7 +58,7 @@ namespace StreamScheduler.MVVM.Views
         }
 
         private void BtnClearPlaylist_Click(object sender, RoutedEventArgs e) {
-            sql.DeleteAllPlaylistVideos();
+            sql.ClearPlaylistVideos();
             RefreshDataGrids();
         }
     }

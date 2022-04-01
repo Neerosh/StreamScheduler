@@ -40,7 +40,7 @@
                                     Width="auto"/>
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}"
                                     Width="*"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding StartDateTime}"
+                <DataGridTextColumn Header="DateTime (DD/MM/YYYY)" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"
                                     Width="auto"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
@@ -58,11 +58,11 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-        <Button VerticalAlignment="Center" HorizontalAlignment="Right"
+        <Button VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Height="20"
                 Grid.Column="4" Grid.Row="7" Margin="0,0,15,0"
                 Content="Delete Selected" x:Name ="BtnDeleteVideo"  Click="BtnDeleteVideo_Click" />
         <Button VerticalAlignment="Center" HorizontalAlignment="Left"
-                Grid.Column="0" Grid.Row="7" Margin="15,0,0,0"
+                Grid.Column="0" Grid.Row="7" Margin="15,0,0,0" Width="100" Height="20"
                 Content="Clear Playlist" x:Name ="BtnClearPlaylist" Click="BtnClearPlaylist_Click"/>
     </Grid>
 </UserControl>

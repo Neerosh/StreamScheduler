@@ -20,7 +20,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -43,7 +43,7 @@
                                         Width="auto"/>
                     <DataGridTextColumn Header="Title" Binding="{Binding Title}"
                                         Width="*" />
-                    <DataGridTextColumn Header="DateTime" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"
+                    <DataGridTextColumn Header="DateTime (DD/MM/YYYY)" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}"
                                         Width="auto"/>
                 </DataGrid.Columns>
                 <DataGrid.Resources>
