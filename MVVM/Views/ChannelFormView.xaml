@@ -34,7 +34,7 @@
                  MinWidth="250" Height="20"
                  Foreground="White" Background="#262626" 
                  Text="{Binding FormChannelUrl}"/>
-        <Button Grid.Column="5" Grid.Row="0" 
+        <Button Grid.Column="5" Grid.Row="0"
                 Margin="15,15,15,0" Width="150" Height="20"
                 Content="Get Channel Information" Command="{Binding GetChannelInformation}"/>
         <Label Grid.Column="0" Grid.Row="1" Margin="15,15,0,0" 
@@ -88,8 +88,6 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-       
-        
         
         
         <StackPanel Grid.Column="5" Grid.Row="5" Margin="15,20,15,0"
