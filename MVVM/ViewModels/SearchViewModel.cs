@@ -48,7 +48,6 @@ namespace StreamScheduler.MVVM.ViewModels
             _videos = sql.ListAvailableVideos();
             _channels = sql.GetAllChannelsNames();
 
-            //AddToPlaylistCommand = new AddToPlaylistCommand(SelectedVideo);
             AddToPlaylistCommand = new RelayCommand(o => {
                 sql.AddPlaylistVideo(SelectedVideo.VideoUrl);
             });
@@ -75,7 +74,7 @@ namespace StreamScheduler.MVVM.ViewModels
             if (listVideos.Count > 0) {
                 sql.UpdateVideos(listVideos);
             } else {
-                MessageBox.Show("No upcoming livestreams not found.");
+                MessageBox.Show("No upcoming livestreams found.");
             }
         }
 

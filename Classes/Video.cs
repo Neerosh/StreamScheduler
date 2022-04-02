@@ -13,13 +13,16 @@ namespace StreamScheduler
         public string ChannelUrl { get; set; }
         public string ChannelName { get; set; }
 
-
+        public Video(string title, string thumbnailUrl, string videoUrl) {
+            Title = title;
+            ThumbnailUrl = thumbnailUrl;
+            VideoUrl = videoUrl;
+        }
         public Video(string title, string thumbnailUrl, string videoUrl, string channelUrl) {
-            this.Title = title;
-            this.ThumbnailUrl = thumbnailUrl;
-            this.VideoUrl = videoUrl;
-            this.ChannelUrl = channelUrl;
-            //channelName = sql.GetChannelName(channelUrl);
+            Title = title;
+            ThumbnailUrl = thumbnailUrl;
+            VideoUrl = videoUrl;
+            ChannelUrl = channelUrl;
         }
         public Video(string title, string thumbnailUrl, string videoUrl, string channelUrl,string channelName) {
             this.Title = title;
@@ -33,7 +36,7 @@ namespace StreamScheduler
         public void SetStartDateTimeYoutube(string startDateTime) {
             try {
                 StartDateTime = DateTime.Parse(startDateTime, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                this.StartDateTime = DateTime.ParseExact(startDateTime, "M/d/yyyy H:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                StartDateTime = DateTime.ParseExact(startDateTime, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
             } catch (Exception e) {
                 MessageBox.Show(e.ToString());
             }

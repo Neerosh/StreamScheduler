@@ -39,6 +39,31 @@ namespace StreamScheduler
             }
             return listChannels;
         }
+        public async Task<List<Video>> GetVideoInformation(string videoUrl) {
+            var youtubeService = CreateYoutubeService();
+            List<Video> listVideos = new List<Video>();
+
+            if (youtubeService.ApiKey.Equals("")) { return listVideos; }
+            var searchListRequest = youtubeService.Videos.List("snippet");
+            searchListRequest.Id = videoUrl;
+            // Call the search.list method to retrieve results matching the specified query term.
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            // Add each result to the appropriate list, and then display the lists of
+            // matching videos, channels, and playlists.
+            if (searchListResponse.Items == null) { return listVideos; }
+            foreach (var searchResult in searchListResponse.Items) {
+                switch (searchResult.Kind) {
+                    case "youtube#video":
+                        Video video = new Video(searchResult.Snippet.Title, searchResult.Snippet.Thumbnails.Medium.Url, searchResult.Id);
+                        if (searchResult.LiveStreamingDetails.ScheduledStartTime != null) {
+                            video.SetStartDateTimeYoutube(searchResult.LiveStreamingDetails.ScheduledStartTime.ToString());
+                        }
+                        listVideos.Add(video);
+                        break;
+                }
+            }
+            return listVideos;
+        }
         public async Task<List<Video>> GetUpcomingVideos(string channelUrl) {
             List<Video> listVideos = new List<Video>();
             List<string[]> videoids = new List<string[]>();

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StreamScheduler.MVVM.Views"
+             xmlns:viewmodels="clr-namespace:StreamScheduler.MVVM.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:PlaylistViewModel}"
              mc:Ignorable="d"  FontSize="12"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -11,30 +12,50 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid Grid.Row="0" Grid.Column="0"
-                  Grid.ColumnSpan="5" Grid.RowSpan="7"
+        <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                   Width="240" Height="135" HorizontalAlignment="Left"
+                   Margin="14,15,0,0" x:Name="imgSelectedThumbnail" Stretch="Uniform"/>
+        <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="4"
+                    Margin="15,15,15,5" TextWrapping="Wrap" BorderThickness="0"
+                    Foreground="White" Background="Transparent"
+                    x:Name="txtSelectedTitle" FontSize="14"/>
+        <TextBlock Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="4"
+                    Margin="15,5,15,5" TextWrapping="Wrap"
+                    Foreground="White" Background="Transparent"
+                    Text="Channel Links: " x:Name="txtChannelLinks">
+                        <LineBreak/>
+                        <TextBlock Text="Youtube: "/>
+                        <Hyperlink Hyperlink.Click="YoutubeLink_Click">
+                            <TextBlock x:Name="txtYoutubeLink"/>
+                        </Hyperlink>
+            </TextBlock>
+        <DataGrid Grid.Row="3" Grid.Column="0"
+                  Grid.ColumnSpan="6" Grid.RowSpan="4"
                   Margin="15,15,15,0"
                   Background="Transparent"
                   HeadersVisibility="Column"
                   Name="dgPlaylistVideos"
-                  ItemsSource="{Binding}"
+                  ItemsSource="{Binding Videos}"
+                  SelectedItem="{Binding SelectedVideo}"
                   BorderThickness="0"
-                  AutoGenerateColumns="False" IsReadOnly="True" MinHeight="350"
+                  AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionUnit="FullRow" SelectionMode="Single"
-                  MouseDoubleClick="dgPlaylistVideos_MouseDoubleClick">
+                  MouseDoubleClick="dgPlaylistVideos_MouseDoubleClick"
+                  SelectionChanged="dgPlaylistVideos_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Channel" Binding="{Binding ChannelName}"
                                     Width="auto"/>
@@ -59,10 +80,10 @@
             </DataGrid.Resources>
         </DataGrid>
         <Button VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Height="20"
-                Grid.Column="4" Grid.Row="7" Margin="0,0,15,0"
-                Content="Delete Selected" x:Name ="BtnDeleteVideo"  Click="BtnDeleteVideo_Click" />
+                Grid.Column="5" Grid.Row="7" Margin="0,0,15,0"
+                Content="Delete Selected" x:Name ="BtnDeleteVideo"  Command="{Binding DeleteVideoPlaylistCommand}" />
         <Button VerticalAlignment="Center" HorizontalAlignment="Left"
                 Grid.Column="0" Grid.Row="7" Margin="15,0,0,0" Width="100" Height="20"
-                Content="Clear Playlist" x:Name ="BtnClearPlaylist" Click="BtnClearPlaylist_Click"/>
+                Content="Clear Playlist" x:Name ="BtnClearPlaylist" Command="{Binding ClearPlaylistCommand}"/>
     </Grid>
 </UserControl>

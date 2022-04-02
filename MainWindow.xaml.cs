@@ -1,5 +1,7 @@
-﻿using System;
+﻿using StreamScheduler.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -21,20 +23,25 @@ namespace StreamScheduler
         }
         private async Task LoopCheckIsLive() {
             bool result = false;
-            DateTime systemDateTime, itemDateTime;
             double timeSpan;
+            DateTime systemDateTime, itemDateTime;
+            SQLite sql = new SQLite();
+            ObservableCollection<VideoViewModel> playlistVideos;
 
             while (result == false) {
                 await Task.Delay(60000); // 1 min
-                //foreach (Video video in dgPlaylistVideos.Items) { fix later
-                //    systemDateTime = DateTime.Now;
-                //    itemDateTime = video.StartDateTime;
-                //    timeSpan = (itemDateTime - systemDateTime).TotalMinutes;
-                //    //MessageBox.Show("timeSpan =" + timeSpan);
-                //    if (timeSpan <= 1 && timeSpan >= 0) {
-                //        OpenLink(video.VideoUrl);
-                //    }
-                //}
+                sql = new SQLite();
+                playlistVideos = sql.ListAvaliablePlaylistVideos();
+                foreach (VideoViewModel video in playlistVideos) {
+                    systemDateTime = DateTime.Now;
+                    itemDateTime = video.StartDateTime;
+                    timeSpan = (itemDateTime - systemDateTime).TotalMinutes;
+                    //MessageBox.Show("timeSpan =" + timeSpan);
+                    if (timeSpan <= 2 && timeSpan >= 0) {
+                        OpenLink(video.VideoUrl);
+                        sql.UpdatePlaylistVideoUserNotified(video.VideoUrl);
+                    }
+                }
             }
         }
 

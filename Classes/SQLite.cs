@@ -39,8 +39,10 @@ namespace StreamScheduler
                                   ");"+
                                   "CREATE TABLE IF NOT EXISTS Playlist (" +
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                    "VideoUrl INTEGER NOT NULL" +
-                                  ");"+ 
+                                    "VideoUrl INTEGER NOT NULL," +
+                                    "UserNotified TINYINT DEFAULT 0," +
+                                    "UNIQUE (VideoUrl)" +
+                                  ");" + 
                                   "CREATE TABLE IF NOT EXISTS Settings (" +
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                     "Name Varchar(200) NOT NULL," +
@@ -135,19 +137,22 @@ namespace StreamScheduler
             connection.Close();
             return listVideos;
         }
-        public List<Video> ListPlaylistVideos() {
+        public ObservableCollection<VideoViewModel> ListAvaliablePlaylistVideos() {
             SqliteDataReader reader;
-            List<Video> listVideos = new List<Video>();
+            ObservableCollection<VideoViewModel> listVideos = new ObservableCollection<VideoViewModel>();
             connection.Open();
             command.Connection = connection;
-            command.CommandText = "SELECT VID.Title,VID.ThumbnailUrl,VID.VideoUrl,VID.StartDateTime,VID.ChannelUrl,CHA.Name FROM Videos VID" +
-                                  " LEFT JOIN Channels CHA ON VID.ChannelUrl = CHA.Url WHERE VID.VideoUrl IN (SELECT VideoUrl FROM Playlist)";
+            command.CommandText = "SELECT VID.Title,VID.ThumbnailUrl,VID.VideoUrl,VID.StartDateTime,VID.ChannelUrl,CHA.Name"+
+                                  " FROM Playlist PLAY" +
+                                  " LEFT JOIN Videos VID ON PLAY.VideoUrl = VID.VideoUrl"+
+                                  " LEFT JOIN Channels CHA ON VID.ChannelUrl = CHA.Url"+
+                                  " WHERE PLAY.UserNotified = 0";
             try {
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetString(5));
                     video.SetStartDateTimeSQL(reader.GetString(3));
-                    listVideos.Add(video);
+                    listVideos.Add(new VideoViewModel(video));
                 }
                 reader.Close();
             } catch (Exception ex) {
@@ -169,6 +174,19 @@ namespace StreamScheduler
             }
             connection.Close();
         }
+        public void UpdatePlaylistVideoUserNotified(string videoUrl) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "UPDATE Playlist SET UserNotified = 1 WHERE VideoUrl = '" + videoUrl + "'";
+                command.ExecuteNonQuery();
+
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+
         public void DeletePlaylistVideo(string videoUrl) {
             connection.Open();
             command.Connection = connection;

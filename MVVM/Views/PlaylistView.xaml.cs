@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StreamScheduler.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,10 +22,9 @@ namespace StreamScheduler.MVVM.Views
     /// </summary>
     public partial class PlaylistView : UserControl
     {
-        private SQLite sql = new SQLite();
         public PlaylistView() {
             InitializeComponent();
-            RefreshDataGrids();
+            txtChannelLinks.Visibility = Visibility.Hidden;
         }
 
         private void OpenLink(string link) {
@@ -35,31 +35,27 @@ namespace StreamScheduler.MVVM.Views
             Process.Start(psi);
         }
 
-        private void RefreshDataGrids() {
-            dgPlaylistVideos.DataContext = sql.ListPlaylistVideos();
-        }
-
-        private Video SelectedVideo() {
-            //if (dgPlaylistVideos.SelectedItem == null) { return null; }
-
-            Video video = (Video)dgPlaylistVideos.SelectedItem;
+        private VideoViewModel SelectedVideo() {
+            VideoViewModel video = (VideoViewModel)dgPlaylistVideos.SelectedItem;
             return video;
         }
 
-        private void dgPlaylistVideos_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            Video video = SelectedVideo();
-            OpenLink(video.VideoUrl);
+        private void dgPlaylistVideos_MouseDoubleClick(object sender, EventArgs e) {
+            OpenLink(SelectedVideo().VideoUrl);
         }
-
-        private void BtnDeleteVideo_Click(object sender, RoutedEventArgs e) {
-            Video video = SelectedVideo();
-            sql.DeletePlaylistVideo(video.VideoUrl);
-            RefreshDataGrids();
+        private void dgPlaylistVideos_SelectionChanged(object sender, EventArgs e) {
+            if (dgPlaylistVideos.SelectedItem == null) { return; }
+            VideoViewModel video = (VideoViewModel)dgPlaylistVideos.SelectedItem;
+            imgSelectedThumbnail.Source = new BitmapImage(new Uri(video.ThumbnailUrl));
+            txtSelectedTitle.Text = video.Title;
+            txtYoutubeLink.Text = "https://www.youtube.com/channel/" + video.ChannelUrl;
+            txtChannelLinks.Visibility = Visibility.Visible;
         }
+        private void YoutubeLink_Click(object sender, EventArgs e) {
+            if (dgPlaylistVideos.SelectedItem == null) { return; }
 
-        private void BtnClearPlaylist_Click(object sender, RoutedEventArgs e) {
-            sql.ClearPlaylistVideos();
-            RefreshDataGrids();
+            Video video = (Video)dgPlaylistVideos.SelectedItem;
+            OpenLink(txtYoutubeLink.Text);
         }
     }
 }
