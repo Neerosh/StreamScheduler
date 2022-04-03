@@ -29,15 +29,15 @@ namespace StreamScheduler
             ObservableCollection<VideoViewModel> playlistVideos;
 
             while (result == false) {
-                await Task.Delay(60000); // 1 min
+                await Task.Delay(120000); // 1 min
                 sql = new SQLite();
                 playlistVideos = sql.ListAvaliablePlaylistVideos();
                 foreach (VideoViewModel video in playlistVideos) {
                     systemDateTime = DateTime.Now;
                     itemDateTime = video.StartDateTime;
                     timeSpan = (itemDateTime - systemDateTime).TotalMinutes;
-                    //MessageBox.Show("timeSpan =" + timeSpan);
-                    if (timeSpan <= 2 && timeSpan >= 0) {
+                    MessageBox.Show("timeSpan =" + timeSpan);
+                    if (timeSpan <= 3 && timeSpan >= 0) {
                         OpenLink(video.VideoUrl);
                         sql.UpdatePlaylistVideoUserNotified(video.VideoUrl);
                     }

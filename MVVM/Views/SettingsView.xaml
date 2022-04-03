@@ -26,11 +26,11 @@
                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" 
                  MinWidth="350" Height="20"
                  TextAlignment="Left" Margin="15,15,0,0"
-                 x:Name="txtGoogleAPIKey"
+                 x:Name="txtGoogleAPIKey" Text="{Binding GoogleApiKey}"
                  Foreground="White" Background="#262626" />
         <Button VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Grid.Column="3" Grid.Row="0" Margin="0,15,15,0"
                 Content="Save Settings" MinWidth="100" MinHeight="20"
-                x:Name="BtnSaveSettings" Click="BtnSaveSettings_Click"/>
+                x:Name="BtnSaveSettings" Command="{Binding UpdateSettingsCommand}"/>
     </Grid>
 </UserControl>

@@ -50,12 +50,12 @@ namespace StreamScheduler.MVVM.ViewModels
 
             AddToPlaylistCommand = new RelayCommand(o => {
                 sql.AddPlaylistVideo(SelectedVideo.VideoUrl);
-            });
+            }, o => { return SelectedVideo != null;  });
             SearchUpcomingVideosCommand = new RelayCommand(async o => {
                 await SearchUpcomingVideos(SelectedChannel.ChannelUrl);
                 Videos.Clear();
                 Videos = sql.ListAvailableVideos();
-            });
+            }, o => { return SelectedChannel != null; });
         }
 
         private void OpenLink(string link) {

@@ -36,7 +36,7 @@
                  Text="{Binding FormChannelUrl}"/>
         <Button Grid.Column="5" Grid.Row="0"
                 Margin="15,15,15,0" Width="150" Height="20"
-                Content="Get Channel Information" Command="{Binding GetChannelInformation}"/>
+                Content="Get Channel Information" Command="{Binding GetChannelInformationCommand}"/>
         <Label Grid.Column="0" Grid.Row="1" Margin="15,15,0,0" 
                VerticalAlignment="Top"
                Foreground="White" Content="Channel Name:"/>
@@ -47,7 +47,7 @@
                  Text="{Binding FormChannelName}"/>
         <Button Grid.Column="5" Grid.Row="1" 
                 Margin="15,15,15,0" Width="150" Height="20"
-                Content="Clear Selection" Command="{Binding ClearSelection}"/>
+                Content="Clear Selection" Command="{Binding ClearSelectionCommand}"/>
         <Label Grid.Column="0" Grid.Row="3" Margin="15,10,0,0"
                VerticalAlignment="Top"
                Foreground="White" Content="Channel Description:"/>
@@ -94,13 +94,13 @@
                     VerticalAlignment="Top" HorizontalAlignment="Left">
             <Button Margin="0,0,0,10" Height="20" Width="150" 
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Content="Insert Channel" Command="{Binding InsertChannel}"/>
+                Content="Insert Channel" Command="{Binding InsertChannelCommand}"/>
             <Button Margin="0,0,0,10" Height="20" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Content="Update Channel" Command="{Binding UpdateChannel}"/>
+                Content="Update Channel" Command="{Binding UpdateChannelCommand}"/>
             <Button Margin="0,0,0,0" Height="20" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Content="Delete Channel" Command="{Binding DeleteChannel}"/>
+                Content="Delete Channel" Command="{Binding DeleteChannelCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

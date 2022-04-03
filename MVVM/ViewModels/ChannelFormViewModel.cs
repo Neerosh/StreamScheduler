@@ -59,36 +59,37 @@ namespace StreamScheduler.MVVM.ViewModels
             }
         }
 
-        public RelayCommand GetChannelInformation { get; }
-        public RelayCommand InsertChannel { get; }
-        public RelayCommand UpdateChannel { get; }
-        public RelayCommand DeleteChannel { get; }
-        public RelayCommand ClearSelection { get; }
+        public RelayCommand GetChannelInformationCommand { get; }
+        public RelayCommand InsertChannelCommand { get; }
+        public RelayCommand UpdateChannelCommand { get; }
+        public RelayCommand DeleteChannelCommand { get; }
+        public RelayCommand ClearSelectionCommand { get; }
+
         public ChannelFormViewModel() {
             Channels = sql.GetAllChannelsNames();
 
-            GetChannelInformation = new RelayCommand(async o => {
+            GetChannelInformationCommand = new RelayCommand(async o => {
                 await GetChannelInfomationTask(FormChannelUrl);
-            });
+            }, o => { return !string.IsNullOrEmpty(FormChannelUrl); });
 
-            InsertChannel = new RelayCommand(o => {
+            InsertChannelCommand = new RelayCommand(o => {
                 ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
                 sql.InsertChannel(channelView);
                 Channels = sql.GetAllChannelsNames();
                 SelectedChannel = channelView;
-            });
-            UpdateChannel = new RelayCommand(o => {
+            }, o => { return !string.IsNullOrEmpty(FormChannelName) && !string.IsNullOrEmpty(FormChannelUrl) && !string.IsNullOrEmpty(FormChannelDescription); });
+            UpdateChannelCommand = new RelayCommand(o => {
                 ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
                 sql.UpdateChannel(channelView);
                 Channels = sql.GetAllChannelsNames();
                 SelectedChannel = channelView;
-            });
-            DeleteChannel = new RelayCommand(o => {
+            }, o => { return SelectedChannel != null; });
+            DeleteChannelCommand = new RelayCommand(o => {
                 ChannelViewModel channelView = new ChannelViewModel(new Channel(FormChannelName, FormChannelUrl, FormChannelDescription));
                 sql.DeleteChannel(channelView);
                 Channels = sql.GetAllChannelsNames();
-            });
-            ClearSelection = new RelayCommand(o => {
+            }, o => { return SelectedChannel != null; });
+            ClearSelectionCommand = new RelayCommand(o => {
                 SelectedChannel = new ChannelViewModel(new Channel("", "", ""));
             });
         }

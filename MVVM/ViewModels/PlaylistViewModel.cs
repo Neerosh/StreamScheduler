@@ -43,12 +43,13 @@ namespace StreamScheduler.MVVM.ViewModels
 
         public PlaylistViewModel() {
             _videos = sql.ListAvaliablePlaylistVideos();
+
             DeleteVideoPlaylistCommand = new RelayCommand(o => {
                 sql.AddPlaylistVideo(SelectedVideo.VideoUrl);
-            });
+            }, o => { return SelectedVideo != null; });
             ClearPlaylistCommand = new RelayCommand(o => {
                 sql.ClearPlaylistVideos();
-            });
+            }, o => { return Videos.Count > 0; });
         }
     }
 }
