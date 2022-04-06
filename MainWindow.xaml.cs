@@ -15,13 +15,12 @@ namespace StreamScheduler
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SQLite sql = new SQLite();
 
         public MainWindow() {
             InitializeComponent();
-            LoopCheckIsLive();
+            LoopCheckPlaylist();
         }
-        private async Task LoopCheckIsLive() {
+        private async Task LoopCheckPlaylist() {
             bool result = false;
             double timeSpan;
             DateTime systemDateTime, itemDateTime;
@@ -36,7 +35,7 @@ namespace StreamScheduler
                     systemDateTime = DateTime.Now;
                     itemDateTime = video.StartDateTime;
                     timeSpan = (itemDateTime - systemDateTime).TotalMinutes;
-                    MessageBox.Show("timeSpan =" + timeSpan);
+                    //MessageBox.Show("timeSpan =" + timeSpan);
                     if (timeSpan <= 3 && timeSpan >= 0) {
                         OpenLink(video.VideoUrl);
                         sql.UpdatePlaylistVideoUserNotified(video.VideoUrl);
@@ -59,8 +58,6 @@ namespace StreamScheduler
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            
-        }
+
     }
 }

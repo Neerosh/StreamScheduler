@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StreamScheduler.MVVM.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-
         public RelayCommand SearchViewCommand { get; }
         public RelayCommand PlaylistViewCommand { get; }
         public RelayCommand SettingsViewCommand { get; }
