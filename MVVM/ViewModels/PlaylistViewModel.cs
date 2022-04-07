@@ -1,11 +1,5 @@
 ﻿using StreamScheduler.Core;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StreamScheduler.MVVM.ViewModels
 {
@@ -33,19 +27,13 @@ namespace StreamScheduler.MVVM.ViewModels
         public RelayCommand DeleteVideoPlaylistCommand { get; }
         public RelayCommand ClearPlaylistCommand { get; }
 
-        private void OpenLink(string link) {
-            //open link on default browser win 10 
-            var psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = link;
-            Process.Start(psi);
-        }
 
         public PlaylistViewModel() {
             _videos = sql.ListAvaliablePlaylistVideos();
 
             DeleteVideoPlaylistCommand = new RelayCommand(o => {
-                sql.AddPlaylistVideo(SelectedVideo.VideoUrl);
+                sql.DeletePlaylistVideo(SelectedVideo.VideoUrl);
+                Videos.Remove(SelectedVideo);
             }, o => { return SelectedVideo != null; });
             ClearPlaylistCommand = new RelayCommand(o => {
                 sql.ClearPlaylistVideos();

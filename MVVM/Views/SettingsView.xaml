@@ -8,6 +8,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
@@ -19,17 +21,32 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label VerticalAlignment="Center" HorizontalAlignment="Center"
+        <Label VerticalAlignment="Center" HorizontalAlignment="Right"
                Content="Google Youtube API Key:" Margin="15,15,0,0"
+               Grid.Column="0" Grid.Row="0"
                Foreground="White"/>
         <TextBox VerticalAlignment="Center" HorizontalAlignment="Left"
-                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" 
+                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" 
                  MinWidth="350" Height="20"
                  TextAlignment="Left" Margin="15,15,0,0"
-                 x:Name="txtGoogleAPIKey" Text="{Binding GoogleApiKey}"
+                 Text="{Binding GoogleApiKey}"
                  Foreground="White" Background="#262626" />
+        <Label VerticalAlignment="Center" HorizontalAlignment="Right"
+               Content="Playlist Check Interval:" Margin="15,15,0,0"
+               Grid.Column="0" Grid.Row="1"
+               Foreground="White"/>
+        <TextBox VerticalAlignment="Center" HorizontalAlignment="Left"
+                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" 
+                 Width="50" Height="20"
+                 TextAlignment="Left" Margin="15,15,0,0"
+                 Text="{Binding PlaylistScanInterval}"
+                 Foreground="White" Background="#262626" />
+        <Label VerticalAlignment="Center" HorizontalAlignment="Left"
+               Content="Minutes" Margin="70,15,0,0"
+               Grid.Column="1" Grid.Row="1"
+               Foreground="White"/>
         <Button VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Grid.Column="3" Grid.Row="0" Margin="0,15,15,0"
+                Grid.Column="5" Grid.Row="0" Margin="0,15,15,0"
                 Content="Save Settings" MinWidth="100" MinHeight="20"
                 x:Name="BtnSaveSettings" Command="{Binding UpdateSettingsCommand}"/>
     </Grid>

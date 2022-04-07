@@ -1,6 +1,8 @@
 ﻿using StreamScheduler.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +34,7 @@ namespace StreamScheduler.MVVM.ViewModels
         }
 
         public MainViewModel() {
+            Task taskCheckPlaylist = LoopCheckPlaylist();
             SearchViewCommand = new RelayCommand(o => {
                 SearchVM = new SearchViewModel();
                 CurrentView = SearchVM;
@@ -49,5 +52,45 @@ namespace StreamScheduler.MVVM.ViewModels
                 CurrentView = ChannelFormVM;
             });
         }
+
+        private async Task LoopCheckPlaylist() {
+            bool result = false;
+            double timeSpan;
+            DateTime systemDateTime, itemDateTime;
+            SQLite sql = new SQLite();
+            ObservableCollection<VideoViewModel> playlistVideos;
+
+            while (result == false) {
+                sql = new SQLite();
+                string playlistInterval = sql.GetSettingValue("PlaylistCheckInterval");
+                int interval = 0;
+                if (playlistInterval == null || playlistInterval.Equals(String.Empty)) {
+                    interval = 60000; // 1 min
+                } else {
+                    interval = Convert.ToInt32(playlistInterval)*10000;
+                }
+                await Task.Delay(interval);
+                playlistVideos = sql.ListAvaliablePlaylistVideos();
+                foreach (VideoViewModel video in playlistVideos) {
+                    systemDateTime = DateTime.Now;
+                    itemDateTime = video.StartDateTime;
+                    timeSpan = (itemDateTime - systemDateTime).TotalMinutes;
+                    //MessageBox.Show("timeSpan =" + timeSpan);
+                    if (timeSpan <= interval+1 && timeSpan >= 0) {
+                        OpenLink(video.VideoUrl);
+                        sql.UpdatePlaylistVideoUserNotified(video.VideoUrl);
+                    }
+                }
+            }
+        }
+        private void OpenLink(string link) {
+            //open link on default browser win 10 
+            var psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = "https://www.youtube.com/watch?v=" + link;
+            Process.Start(psi);
+        }
+
+
     }
 }

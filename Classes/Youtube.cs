@@ -13,7 +13,7 @@ namespace StreamScheduler
 
         private YouTubeService CreateYoutubeService() {
             YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer() {
-                ApiKey = sql.GetGoogleAPIKey(),
+                ApiKey = sql.GetSettingValue("GoogleApiKey"),
                 ApplicationName = this.GetType().ToString(),
             });
             return youtubeService;

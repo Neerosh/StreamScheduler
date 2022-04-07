@@ -226,23 +226,23 @@ namespace StreamScheduler
             connection.Close();
         }
 
-        public string GetGoogleAPIKey() {
+        public string GetSettingValue(string name) {
             connection.Open();
             command.Connection = connection;
             SqliteDataReader reader;
-            string googleApiKey = "";
+            string value = "";
             try {
-                command.CommandText = "SELECT Value FROM Settings WHERE Name = 'GoogleAPIKey'";
+                command.CommandText = "SELECT Value FROM Settings WHERE Name = '"+name+"'";
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
-                    googleApiKey = reader.GetString(0);
+                    value = reader.GetString(0);
                 }
                 reader.Close();
                 } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error");
             }
             connection.Close();
-            return googleApiKey;
+            return value;
         }
 
         public ObservableCollection<ChannelViewModel> GetAllChannelsNames() {
