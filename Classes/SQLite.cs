@@ -32,11 +32,13 @@ namespace StreamScheduler
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                     "Title Varchar(200) NOT NULL," +
                                     "VideoUrl Varchar(2000) NOT NULL," +
-                                    "ChannelUrl Varchar(2000) NOT NULL," +
+                                    "Description Varchar(5000),"+
                                     "ThumbnailUrl Varchar(2000)," +
                                     "StartDateTime DateTime NOT NULL," +
-                                    "UNIQUE (VideoUrl)" +
-                                  ");"+
+                                    "ChannelUrl Varchar(2000) NOT NULL," +
+                                    "UNIQUE (VideoUrl,ChannelUrl)" +
+                                    "FOREIGN KEY(ChannelUrl) REFERENCES Channels(Url) ON DELETE CASCADE"+
+                                  ");" +
                                   "CREATE TABLE IF NOT EXISTS Playlist (" +
                                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                     "VideoUrl INTEGER NOT NULL," +
@@ -94,6 +96,50 @@ namespace StreamScheduler
             connection.Close();
         }
 
+
+        public void InsertVideo(VideoViewModel video) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "INSERT INTO Videos(Title,VideoUrl,ChannelUrl,ThumbnailUrl,StartDateTime,Description)" +
+                                     " VALUES (\"" + video.Title + "\",\"" + video.VideoUrl + "\",\"" +
+                                                     video.ChannelUrl + "\",\"" + video.ThumbnailUrl + "\",'" +
+                                                     video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "',\""+
+                                                     video.VideoDescription+"\");";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+        public void UpdateVideo(VideoViewModel video) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "UPDATE Video SET Title = \"" + video.Title + "\", VideoUrl = \"" + video.VideoUrl +
+                                      "\", ChannelUrl = \"" + video.ChannelUrl + "\",ThumbnailUrl = \"" + video.ThumbnailUrl +
+                                      "\", StartDateTime ='" + video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "'"+
+                                      ",\""+ video.VideoDescription +"\""+
+                                      " WHERE Url = '" + video.VideoUrl + "'";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+        public void DeleteVideo(VideoViewModel video) {
+            connection.Open();
+            command.Connection = connection;
+            try {
+                command.CommandText = "DELETE FROM Videos " +
+                                     " WHERE VideoUrl = '" + video.ChannelUrl + "'";
+                command.ExecuteNonQuery();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            connection.Close();
+        }
+
         public void UpdateVideos(List<Video> listVideos) {
             connection.Open();
             command.Connection = connection;
@@ -103,7 +149,7 @@ namespace StreamScheduler
                 foreach (Video video in listVideos) {
                     //formatedDateTime = video.StartDateTime.ToString("yyyy/MM/dd HH:mm:ss");
                     formatedDateTime = video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    command.CommandText = "INSERT OR IGNORE INTO videos(Title,VideoUrl,ChannelUrl,ThumbnailUrl,StartDateTime)" +
+                    command.CommandText = "INSERT OR IGNORE INTO Videos(Title,VideoUrl,ChannelUrl,ThumbnailUrl,StartDateTime)" +
                               "\n VALUES (\"" + video.Title + "\",\"" + video.VideoUrl + "\",\"" + video.ChannelUrl + "\",\"" + video.ThumbnailUrl + "\",'" + formatedDateTime + "');"+
                               "\n UPDATE videos SET Title = \"" + video.Title + "\",ChannelUrl = \"" + video.ChannelUrl + "\", ThumbnailUrl = \"" + video.ThumbnailUrl + "\", StartDateTime = '" + formatedDateTime + "' WHERE VideoUrl =\"" + video.VideoUrl + "\"";
                     //Clipboard.SetText(command.CommandText);
@@ -126,9 +172,10 @@ namespace StreamScheduler
             try {
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
-                    Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetString(5));
+                    Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4));
                     video.SetStartDateTimeSQL(reader.GetString(3));
-                    listVideos.Add(new VideoViewModel(video));
+                    Channel channel = new Channel(reader.GetString(5), reader.GetString(4));
+                    listVideos.Add(new VideoViewModel(video,channel));
                 }
                 reader.Close();
             } catch (Exception ex) {
@@ -150,9 +197,10 @@ namespace StreamScheduler
             try {
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
-                    Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetString(5));
+                    Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4));
                     video.SetStartDateTimeSQL(reader.GetString(3));
-                    listVideos.Add(new VideoViewModel(video));
+                    Channel channel = new Channel(reader.GetString(5), reader.GetString(4));
+                    listVideos.Add(new VideoViewModel(video, channel));
                 }
                 reader.Close();
             } catch (Exception ex) {
@@ -263,5 +311,26 @@ namespace StreamScheduler
             return channels;
         }
 
+        public ObservableCollection<VideoViewModel> GetAllVideos() {
+            ObservableCollection<VideoViewModel> videos = new ObservableCollection<VideoViewModel>();
+            try {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = "SELECT VID.Title,VID.ThumbnailUrl,VID.VideoUrl,VID.StartDateTime,IFNULL(VID.Description,''),VID.ChannelUrl,CHA.Name FROM Videos VID" +
+                                      " LEFT JOIN Channels CHA ON VID.ChannelUrl = CHA.Url";
+                reader = command.ExecuteReader();
+                while (reader.Read()) {
+                    Video video = new Video(reader.GetString(0), reader.GetString(1), reader.GetString(2),reader.GetString(4), reader.GetString(5));
+                    video.SetStartDateTimeSQL(reader.GetString(3));
+                    Channel channel = new Channel(reader.GetString(6), reader.GetString(5));
+                    videos.Add(new VideoViewModel(video,channel));
+                }
+                reader.Close();
+                connection.Close();
+            } catch (Exception e) {
+                MessageBox.Show("Error when executing SQLCommand:\n" + e.ToString());
+            }
+            return videos;
+        }
     }
 }

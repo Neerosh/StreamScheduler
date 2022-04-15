@@ -31,6 +31,8 @@
                       Command="{Binding PlaylistViewCommand}"/>
             <MenuItem Header="Manage Channels" 
                       Command="{Binding ChannelFormViewCommand}"/>
+            <MenuItem Header="Manage Videos" 
+                      Command="{Binding VideoFormViewCommand}"/>
             <MenuItem Header="Settings" 
                       Command="{Binding SettingsViewCommand}"/>
         </Menu>

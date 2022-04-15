@@ -44,7 +44,7 @@ namespace StreamScheduler
             List<Video> listVideos = new List<Video>();
 
             if (youtubeService.ApiKey.Equals("")) { return listVideos; }
-            var searchListRequest = youtubeService.Videos.List("snippet");
+            var searchListRequest = youtubeService.Videos.List("snippet,LiveStreamingDetails");
             searchListRequest.Id = videoUrl;
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
@@ -55,7 +55,8 @@ namespace StreamScheduler
                 switch (searchResult.Kind) {
                     case "youtube#video":
                         Video video = new Video(searchResult.Snippet.Title, searchResult.Snippet.Thumbnails.Medium.Url, searchResult.Id);
-                        if (searchResult.LiveStreamingDetails.ScheduledStartTime != null) {
+                        video.Description = searchResult.Snippet.Description;
+                        if (searchResult.LiveStreamingDetails != null) {
                             video.SetStartDateTimeYoutube(searchResult.LiveStreamingDetails.ScheduledStartTime.ToString());
                         }
                         listVideos.Add(video);

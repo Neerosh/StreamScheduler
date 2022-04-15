@@ -16,11 +16,13 @@ namespace StreamScheduler.MVVM.ViewModels
         public RelayCommand PlaylistViewCommand { get; }
         public RelayCommand SettingsViewCommand { get; }
         public RelayCommand ChannelFormViewCommand { get; }
+        public RelayCommand VideoFormViewCommand { get; }
 
         private SearchViewModel SearchVM { get; set; }
         private PlaylistViewModel PlaylistVM { get; set; }
         private SettingsViewModel SettingsVM { get; set; }
         private ChannelFormViewModel ChannelFormVM { get; set; }
+        private VideoFormViewModel VideoFormVM { get; set; }
 
         private object _currentView;
 
@@ -34,7 +36,7 @@ namespace StreamScheduler.MVVM.ViewModels
         }
 
         public MainViewModel() {
-            Task taskCheckPlaylist = LoopCheckPlaylist();
+            //Task taskCheckPlaylist = LoopCheckPlaylist();
             SearchViewCommand = new RelayCommand(o => {
                 SearchVM = new SearchViewModel();
                 CurrentView = SearchVM;
@@ -51,17 +53,20 @@ namespace StreamScheduler.MVVM.ViewModels
                 ChannelFormVM = new ChannelFormViewModel();
                 CurrentView = ChannelFormVM;
             });
+            VideoFormViewCommand = new RelayCommand(o => {
+                VideoFormVM = new VideoFormViewModel();
+                CurrentView = VideoFormVM;
+            });
         }
 
         private async Task LoopCheckPlaylist() {
             bool result = false;
             double timeSpan;
             DateTime systemDateTime, itemDateTime;
-            SQLite sql = new SQLite();
             ObservableCollection<VideoViewModel> playlistVideos;
 
             while (result == false) {
-                sql = new SQLite();
+                SQLite sql = new SQLite();
                 string playlistInterval = sql.GetSettingValue("PlaylistCheckInterval");
                 int interval = 0;
                 if (playlistInterval == null || playlistInterval.Equals(String.Empty)) {
@@ -90,7 +95,5 @@ namespace StreamScheduler.MVVM.ViewModels
             psi.FileName = "https://www.youtube.com/watch?v=" + link;
             Process.Start(psi);
         }
-
-
     }
 }

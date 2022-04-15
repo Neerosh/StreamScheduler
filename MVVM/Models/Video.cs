@@ -10,8 +10,8 @@ namespace StreamScheduler
         public string VideoUrl { get; set; }
         public string ThumbnailUrl { get; set; }
         public DateTime StartDateTime { get; set; }
+        public string Description { get; set; }
         public string ChannelUrl { get; set; }
-        public string ChannelName { get; set; }
 
         public Video(string title, string thumbnailUrl, string videoUrl) {
             Title = title;
@@ -24,13 +24,12 @@ namespace StreamScheduler
             VideoUrl = videoUrl;
             ChannelUrl = channelUrl;
         }
-        public Video(string title, string thumbnailUrl, string videoUrl, string channelUrl,string channelName) {
-            this.Title = title;
-            this.ThumbnailUrl = thumbnailUrl;
-            this.VideoUrl = videoUrl;
-            //this.StartDateTime = DateTime.ParseExact(startDateTime, "MM/dd/yyyy hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            this.ChannelUrl = channelUrl;
-            this.ChannelName = channelName;
+        public Video(string title, string thumbnailUrl, string videoUrl,string description, string channelUrl) {
+            Title = title;
+            ThumbnailUrl = thumbnailUrl;
+            VideoUrl = videoUrl;
+            ChannelUrl = channelUrl;
+            Description = description;
         }
 
         public void SetStartDateTimeYoutube(string startDateTime) {

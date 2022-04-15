@@ -1,11 +1,8 @@
 ﻿using StreamScheduler.Core;
-using StreamScheduler.MVVM.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace StreamScheduler.MVVM.ViewModels
 {
@@ -58,13 +55,6 @@ namespace StreamScheduler.MVVM.ViewModels
             }, o => { return SelectedChannel != null; });
         }
 
-        private void OpenLink(string link) {
-            //open link on default browser win 10 
-            var psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = link;
-            Process.Start(psi);
-        }
         public async Task SearchUpcomingVideos(string channelUrl) {
             List<Video> listVideos;
             Youtube youtube = new Youtube();

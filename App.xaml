@@ -19,6 +19,9 @@
             <DataTemplate DataType="{x:Type viewModel:ChannelFormViewModel}">
                 <view:ChannelFormView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:VideoFormViewModel}">
+                <view:VideoFormView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
