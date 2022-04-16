@@ -102,10 +102,10 @@ namespace StreamScheduler
             command.Connection = connection;
             try {
                 command.CommandText = "INSERT INTO Videos(Title,VideoUrl,ChannelUrl,ThumbnailUrl,StartDateTime,Description)" +
-                                     " VALUES (\"" + video.Title + "\",\"" + video.VideoUrl + "\",\"" +
-                                                     video.ChannelUrl + "\",\"" + video.ThumbnailUrl + "\",'" +
-                                                     video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "',\""+
-                                                     video.VideoDescription+"\");";
+                                     " VALUES ('" + video.Title + "','" + video.VideoUrl + "',"+
+                                               "'" + video.ChannelUrl + "','" + video.ThumbnailUrl + "',"+
+                                               "'" + video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "',"+
+                                               "'" + video.VideoDescription+"');";
                 command.ExecuteNonQuery();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error");
@@ -116,11 +116,12 @@ namespace StreamScheduler
             connection.Open();
             command.Connection = connection;
             try {
-                command.CommandText = "UPDATE Video SET Title = \"" + video.Title + "\", VideoUrl = \"" + video.VideoUrl +
-                                      "\", ChannelUrl = \"" + video.ChannelUrl + "\",ThumbnailUrl = \"" + video.ThumbnailUrl +
-                                      "\", StartDateTime ='" + video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "'"+
-                                      ",\""+ video.VideoDescription +"\""+
-                                      " WHERE Url = '" + video.VideoUrl + "'";
+                command.CommandText = "UPDATE Videos SET Title = '" + video.Title + "',"+
+                                      "ChannelUrl = '" + video.ChannelUrl + "',ThumbnailUrl = '" + video.ThumbnailUrl +"',"+
+                                      "StartDateTime ='" + video.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "',"+
+                                      "Description = '"+ video.VideoDescription +"'"+
+                                      " WHERE VideoUrl = '" + video.VideoUrl + "'";
+                //Clipboard.SetText(command.CommandText);
                 command.ExecuteNonQuery();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error");
@@ -132,7 +133,7 @@ namespace StreamScheduler
             command.Connection = connection;
             try {
                 command.CommandText = "DELETE FROM Videos " +
-                                     " WHERE VideoUrl = '" + video.ChannelUrl + "'";
+                                     " WHERE VideoUrl = '" + video.VideoUrl + "'";
                 command.ExecuteNonQuery();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error");
@@ -191,8 +192,8 @@ namespace StreamScheduler
             command.Connection = connection;
             command.CommandText = "SELECT VID.Title,VID.ThumbnailUrl,VID.VideoUrl,VID.StartDateTime,VID.ChannelUrl,CHA.Name"+
                                   " FROM Playlist PLAY" +
-                                  " LEFT JOIN Videos VID ON PLAY.VideoUrl = VID.VideoUrl"+
-                                  " LEFT JOIN Channels CHA ON VID.ChannelUrl = CHA.Url"+
+                                  " INNER JOIN Videos VID ON PLAY.VideoUrl = VID.VideoUrl"+
+                                  " INNER JOIN Channels CHA ON VID.ChannelUrl = CHA.Url" +
                                   " WHERE PLAY.UserNotified = 0";
             try {
                 reader = command.ExecuteReader();

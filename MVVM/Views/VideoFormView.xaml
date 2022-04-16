@@ -30,40 +30,47 @@
                VerticalAlignment="Top"
                Foreground="White" Content="Video Url:"/>
         <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4"
-                 Margin="15,15,0,0"
-                 MinWidth="250" Height="20"
+                 Margin="15,15,0,0" VerticalContentAlignment="Center"
+                 MinWidth="250" Height="22"
                  Foreground="White" Background="#262626" 
-                 Text="{Binding FormVideoUrl}"/>
+                 Text="{Binding FormVideoUrl,UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Column="5" Grid.Row="0"
-                Margin="15,15,15,0" Width="150" Height="20"
+                Margin="15,15,15,0" Width="150" Height="24"
                 Content="Get Video Information" Command="{Binding GetVideoInformationCommand}"/>
         <Label Grid.Column="0" Grid.Row="1" Margin="15,15,0,0" 
                VerticalAlignment="Top"
                Foreground="White" Content="Video Title:"/>
         <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
-                 Margin="15,15,0,0"
-                 MinWidth="250" Height="20"
+                 Margin="15,15,0,0" VerticalContentAlignment="Center"
+                 MinWidth="250" Height="22"
                  Foreground="White" Background="#262626"  
                  Text="{Binding FormVideoTitle}"/>
         <Label Grid.Row="3" Grid.Column="0"
                 Content="Channel:" Foreground="White"
                 VerticalAlignment="Top"
                 Margin="15,15,0,0"/>
-        <ComboBox Grid.Column="1"  Grid.Row="3" Grid.ColumnSpan="3" 
+        <ComboBox Grid.Column="1"  Grid.Row="3" Grid.ColumnSpan="4" HorizontalAlignment="Left" VerticalContentAlignment="Center"
                 ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}"
-                MinWidth="200" Margin="15,15,0,0" x:Name="cboChannel" Height="20" 
+                Width="300" Margin="15,15,0,0" x:Name="cboChannel" Height="25" 
                 DisplayMemberPath="ChannelName" SelectedValuePath="ChannelUrl"/>
         <Label Grid.Row="2" Grid.Column="0"
-                Content="Start Time:" Foreground="White"
+                Content="Start Date:" Foreground="White"
                 VerticalAlignment="Top"
                 Margin="15,15,0,0"/>
-        <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" 
+        <DatePicker Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" 
                  Margin="15,15,0,0"
-                 MinWidth="250" Height="20"
+                 Height="24" Width="150"
+                 SelectedDate="{Binding FormVideoStartDate,UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Grid.Column="3" Grid.Row="2" Margin="15,15,0,0"
+               VerticalAlignment="Top"
+               Foreground="White" Content="Start Time:"/>
+        <TextBox Grid.Column="4" Grid.Row="2" HorizontalAlignment="Left" VerticalContentAlignment="Center"
+                 Margin="15,15,0,0"
+                 Width="100" Height="22"
                  Foreground="White" Background="#262626"  
-                 Text="{Binding FormVideoStartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm\}}"/>
+                 Text="{Binding FormVideoStartDate,StringFormat=hh:mm tt}"/>
         <Button Grid.Column="5" Grid.Row="1" 
-                Margin="15,15,15,0" Width="150" Height="20"
+                Margin="15,15,15,0" Width="150" Height="24"
                 Content="Clear Selection" Command="{Binding ClearSelectionCommand}"/>
         <Label Grid.Column="0" Grid.Row="4" Margin="15,10,0,0"
                VerticalAlignment="Top"
@@ -87,7 +94,7 @@
                                         Width="*"/>
                 <DataGridTextColumn Header="Channel" Binding="{Binding ChannelName}"
                                         Width="auto"/>
-                <DataGridTextColumn Header="DateTime (DD/MM/YYYY)" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm\}}"
+                <DataGridTextColumn Header="Start At" Binding="{Binding StartDateTime, StringFormat=\{0:MM/dd/yyyy HH:mm tt\}}"
                                         Width="auto"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding VideoDescription}"
                                         Width="*"/>
@@ -111,13 +118,13 @@
         
         <StackPanel Grid.Column="5" Grid.Row="6" Margin="15,20,15,0"
                     VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Button Margin="0,0,0,10" Height="20" Width="150" 
+            <Button Margin="0,0,0,10" Height="24" Width="150" 
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Insert Video" Command="{Binding InsertVideoCommand}"/>
-            <Button Margin="0,0,0,10" Height="20" Width="150"
+            <Button Margin="0,0,0,10" Height="24" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Update Video" Command="{Binding UpdateVideoCommand}"/>
-            <Button Margin="0,0,0,0" Height="20" Width="150"
+            <Button Margin="0,0,0,0" Height="24" Width="150"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
                 Content="Delete Video" Command="{Binding DeleteVideoCommand}"/>
         </StackPanel>

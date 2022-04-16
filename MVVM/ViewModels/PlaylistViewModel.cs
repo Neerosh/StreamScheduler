@@ -19,8 +19,10 @@ namespace StreamScheduler.MVVM.ViewModels
         public ObservableCollection<VideoViewModel> Videos {
             get => _videos;
             set {
-                _videos = value;
-                OnPropertyChanged("Videos");
+                if (value != null) {
+                    _videos = value;
+                    OnPropertyChanged("Videos");
+                }
             }
         }
 
@@ -37,7 +39,7 @@ namespace StreamScheduler.MVVM.ViewModels
             }, o => { return SelectedVideo != null; });
             ClearPlaylistCommand = new RelayCommand(o => {
                 sql.ClearPlaylistVideos();
-            }, o => { return Videos.Count > 0; });
+            }, o => { return Videos != null && Videos.Count > 0; });
         }
     }
 }

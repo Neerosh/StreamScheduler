@@ -47,11 +47,11 @@ namespace StreamScheduler.MVVM.ViewModels
                 OnPropertyChanged("FormVideoDescription");
             }
         }
-        public DateTime FormVideoStartDateTime {
+        public DateTime FormVideoStartDate {
             get => _formVideoStartDateTime;
-            set {
+            set{
                 _formVideoStartDateTime = value;
-                OnPropertyChanged("FormVideoStartDateTime");
+                OnPropertyChanged("FormVideoStartDate");
             }
         }
 
@@ -78,7 +78,7 @@ namespace StreamScheduler.MVVM.ViewModels
                     FormVideoTitle = _selectedVideo.Title;
                     FormVideoUrl = _selectedVideo.VideoUrl;
                     FormVideoThumbnailUrl = _selectedVideo.ThumbnailUrl;
-                    FormVideoStartDateTime = _selectedVideo.StartDateTime;
+                    FormVideoStartDate = _selectedVideo.StartDateTime;
                     foreach (ChannelViewModel channel in _channels) {
                         if (channel.ChannelUrl == _selectedVideo.ChannelUrl) { 
                             SelectedChannel = channel;
@@ -104,7 +104,7 @@ namespace StreamScheduler.MVVM.ViewModels
         public VideoFormViewModel() {
             Channels = sql.GetAllChannelsNames();
             Videos = sql.GetAllVideos();
-            FormVideoStartDateTime = DateTime.Now;
+            FormVideoStartDate = DateTime.Now;
 
             Video video;
             Channel channel;
@@ -122,7 +122,8 @@ namespace StreamScheduler.MVVM.ViewModels
                 SelectedVideo = videoView;
             }, o => { return !string.IsNullOrEmpty(FormVideoTitle) && !string.IsNullOrEmpty(FormVideoUrl) && SelectedChannel != null; });
             UpdateVideoCommand = new RelayCommand(o => {
-                video = new Video(FormVideoTitle, FormVideoThumbnailUrl, FormVideoUrl, SelectedChannel.ChannelUrl);
+                video = new Video(FormVideoTitle, FormVideoThumbnailUrl, FormVideoUrl,FormVideoDescription, SelectedChannel.ChannelUrl);
+                video.StartDateTime = FormVideoStartDate;
                 channel = new Channel(SelectedChannel.ChannelName, SelectedChannel.ChannelUrl);
                 VideoViewModel videoView = new VideoViewModel(video, channel);
                 sql.UpdateVideo(videoView);
