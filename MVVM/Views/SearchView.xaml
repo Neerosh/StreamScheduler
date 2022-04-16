@@ -45,7 +45,7 @@
                                         Width="auto"/>
                     <DataGridTextColumn Header="Title" Binding="{Binding Title}"
                                         Width="*" />
-                    <DataGridTextColumn Header="DateTime (DD/MM/YYYY)" Binding="{Binding StartDateTime, StringFormat=\{0:dd/MM/yyyy HH:mm\}}"
+                    <DataGridTextColumn Header="Start at" Binding="{Binding StartDateTime, StringFormat=\{0:MM/dd/yyyy HH:mm tt\}}"
                                         Width="auto"/>
                 </DataGrid.Columns>
                 <DataGrid.Resources>
